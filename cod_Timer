@@ -1,0 +1,38 @@
+/*
+ * File:   project.c
+ * Author: Laboratório 19
+ *
+ * Created on 11 de Agosto de 2010, 00:11
+ */
+
+
+#include <xc.h>
+
+void main(void) {
+    TRISDbits.RD0 = 0; // configura RD) como saída
+    //Pre scaler fcpu/4
+    T2CONbits.T2CKPS1 = 1;
+    T2CONbits.T2CKPS0 = 1;
+    // Pre scaler 16:1 (outros 3 bits já em zero)
+    T2CONbits.TOUTPS0 = 1;
+    T2CONbits.TOUTPS1 = 1;
+    T2CONbits.TOUTPS2 = 1;
+    T2CONbits.TOUTPS3 = 1;
+    PR2 = 39; // Para estouro a cada 1ms
+    T2CONbits.TMR2ON =1; // Ativa contador do timer2
+    int conta10ms=0;
+    while (1){
+        
+        while (TMR2IF==0);
+        TMR2IF = 0;
+        conta10ms++;
+        if(conta10ms == 100){
+            //passou 1s:
+            conta10ms=0;
+            PORTDbits.RD0 = ~PORTDbits.RD0;
+            
+        }
+        
+    }
+    
+}
